@@ -1,0 +1,815 @@
+<html>
+	<head>
+		<title>NFL Scouting</title>
+		<script type="text/javascript">
+	    	var _gaq = _gaq || [];
+	    	_gaq.push(['_setAccount', 'UA-17572263-1']);
+	    	_gaq.push(['_trackPageview']);
+
+	   		(function() {
+	        	var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+	            ga.src = ('https:' == document.location.protocol ? 'https://' : 'http://') + 'stats.g.doubleclick.net/dc.js';
+	        	var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+	    	})();
+  		</script>
+  		<style>
+  	    /**
+		 * Please note that the UI was heavily
+		 * inspired from The Upshot of the NYT
+		 * http://www.nytimes.com/upshot/
+		 *
+		 * Efe Karakus
+		 */
+
+  		/* General */
+
+  		@font-face {
+  			font-family: NFL;
+  			src: url('./static/medium-cond.ttf');
+  		}
+
+  		.article {
+  			margin-left: 247px;
+  			overflow: hidden;
+  		}
+
+  		/* Header */
+
+  		.header {
+  			width: 900px;
+  			margin-top: 20px;
+  			height: 150px;
+  			border-bottom: 1px solid black;
+  		}
+
+  		.header .logo {
+  			display: inline;
+  			text-align: center;
+  			line-height: 150px;
+  			width:700;
+  			font-family: NFL;
+  			font-size: 80px;
+  			position: relative;
+  		}
+
+  		.header .logo img.football {
+  			width: 50px;
+  			margin-left: 7px;
+  			margin-right: 7px;
+  		}
+
+  		/* Article meta */
+
+  		.article-meta {
+  			margin-top: 5px;
+  			margin-bottom: 30px;
+  			font-family: "nyt-franklin", arial, helvetica, serif;
+  			font-size: 11px;
+  			line-height: 20px;
+  			font-weight: 300;
+  			color: #888;
+  		}
+
+  		/* Sidebar */
+  		.sidebar {
+  			width: 90px;
+
+  			display: inline-block;
+  			vertical-align: top;
+  		}
+
+  		.sidebar .authors {
+  			font-family: "nyt-franklin", arial, helvetica, serif;
+  			font-weight: 700;
+  			font-size: 14px;
+  			margin-bottom: 0;
+  			padding-bottom: 5px;
+  			border-bottom: 1px solid black;
+  		}
+
+  		.sidebar .authors a {
+  			text-decoration: none;
+  			color: #000;
+  		}
+
+      .sidebar .authors a.author-twitter {
+        font-weight: 400;
+        font-size: 12px;
+        text-align: center;
+        text-decoration: none;
+        color: #00acee;
+      }
+
+  		.sidebar .authors a:hover {
+  			text-decoration: underline;
+  		}
+
+  		.sidebar.authors a:visited {
+  			color: #000;
+  		}
+
+  		.sidebar .social-media {
+  			margin-top: 15px;
+  		}
+
+  		.sidebar .social-media .separator {
+  			height: 10px;
+  			width: 100%;
+  		}
+
+  		/* Writing */
+
+  		.writing {
+  			margin-left: 10px;
+  			width: 540px;
+  			font-family: georgia,"times new roman",times,serif;
+  			font-size: 16px;
+
+  			margin-top: 0;
+  			display: inline-block;
+  		}
+
+  		.writing .introduction {
+  			color: #484848;
+  			font-size: 14px;
+  			font-style: italic;
+  		}
+
+  		.writing h2 {
+  			font-family: NFL;
+  			font-size: 30px;
+  		}
+
+      .writing h2.subtitle {
+        margin-bottom: 0;
+      }
+
+      .writing h3 {
+        margin-top: 0;
+        font-family: "nyt-franklin", arial, helvetica, serif;
+        font-size: 12px;
+        font-style: italic;
+        font-weight: 400;
+      }
+
+      .writing h3.subsubtitle {
+        margin-top: 10px;
+        font-family: NFL;
+        font-size: 20px;
+        font-style: italic;
+        font-weight: 400;
+      }
+
+  		.writing a {
+  			color: #006BB2;
+  			text-decoration: none;
+  		}
+
+  		.writing a:hover {
+  			text-decoration: underline;
+  		}
+
+  		.writing a:visited {
+  			color: #006BB2;
+  		}
+
+  		/* Dataset Table */
+
+  		.dataset-table {
+  			margin-left: 100px;
+  		}
+
+  		.dataset-table table {
+  			font-family: "nyt-franklin", arial, helvetica, serif;
+  			color: #000;
+  			border-collapse: collapse;
+  		}
+
+  		.dataset-table tr.labels {
+  			font-size: 14px;
+  			font-weight: 700;
+  		}
+
+  		.dataset-table tr.labels td {
+  			border-bottom: 1pt solid black;
+  			padding-right: 10px;
+  			padding-left: 10px;
+  			padding-bottom: 3px;
+  		}
+
+  		.dataset-table tr.values {
+  			font-size: 12px;
+  			font-weight: 400;
+  		}
+
+  		.dataset-table tr.values:hover {
+  			font-size: 12px;
+  			font-weight: 400;
+  			background-color: rgba(200, 200, 200, 0.3);
+  		}
+
+  		.dataset-table tr.values td {
+  			padding-top: 10px;
+  			padding-right: 10px;
+  			padding-left: 10px;
+  			padding-bottom: 3px;
+  		}
+
+      /* Player comparison */
+
+      .player-comparisons {
+        width: 900px;
+        margin-top: 20px;
+        margin-bottom: 20px;
+
+        border-top: 1px solid #888;
+        border-bottom: 1px solid #888;
+      }
+
+        /* Comparison */
+
+        .player-comparisons .comparison {
+          font-family: "nyt-franklin", arial, helvetica, serif;
+          width: 100%;
+        }
+
+        .comparison .positions {
+          font-size: 18px;
+          font-weight: 300;
+          margin-top: 10px;
+          margin-left: 15px;
+          margin-bottom: 10px;
+          width: 100%;
+        }
+
+        .comparison .positions div {
+          display: inline-block;
+          margin-right: 10px;
+        }
+
+        .comparison .positions .position.selected {
+          font-weight: 700;
+        }
+
+        .comparison .positions .position:hover {
+          text-decoration: underline;
+          cursor: pointer;
+        }
+
+        /* Comparison Visualization */
+
+        .comparison .vis {
+          width: 100%;
+          height: 271px;
+        }
+
+        .comparison .vis div {
+          display: inline-block;
+        }
+
+        .comparison .vis .position-plot {
+          width: 600px;
+          height: 250px;
+        }
+
+        .comparison .vis .position-comparison {
+          width: 250px;
+          height: 250px;
+          margin-left: 20px;
+        }
+
+        /* Position Plot */
+
+        .position-plot rect.better-players {
+          fill: #006BB2;
+          opacity: 0.7;
+          visibility: hidden;
+        }
+
+        .position-plot rect.likely-better-players {
+          fill: #0E9FFF;
+          opacity: 0.7;
+          visibility: hidden;
+        }
+
+        .position-plot rect.worse-players {
+          fill: #B26C05;
+          opacity: 0.7;
+          visibility: hidden;
+        }
+
+        .position-plot rect.likely-worse-players {
+          fill: #FFA728;
+          opacity: 0.7;
+          visibility: hidden;
+        }
+
+        .position-plot circle.player {
+          stroke: #000;
+          fill: #fff;
+          stroke-width: 1;
+        }
+
+        .position-plot circle.player:hover {
+          cursor: pointer;
+        }
+
+        .position-plot line.dashed-line {
+          stroke: #707070;
+          stroke-width: 1;
+          visibility: hidden;
+        }
+
+        /* Position Comparison */
+
+        .position-comparison {
+          vertical-align: top;
+        }
+
+        .position-comparison .player-name {
+          font-family: "nyt-franklin", arial, helvetica, serif;
+          color: #000;
+          font-size: 24px;
+          font-weight: 700;
+          height:100;
+        }
+
+        .position-comparison .legend {
+          width: 250px;
+          height: 140px;
+        }
+
+        .position-comparison .legend-row {
+          font-size: 12px;
+          font-weight: 400px;
+          width: 250px;
+          height: 30px;
+          vertical-align: top;
+          line-height: 30px;
+        }
+
+        .position-comparison .better-players-box {
+          width: 25px;
+          height: 25px;
+          border: 1px solid black;
+          background-color: rgba(0, 106, 178, 0.7);
+        }
+
+        .position-comparison .likely-better-players-box {
+          width: 25px;
+          height: 25px;
+          border: 1px solid black;
+          background-color: rgba(14, 158, 255, 0.7);
+        }
+
+        .position-comparison .likely-worse-players-box {
+          width: 25px;
+          height: 25px;
+          border: 1px solid black;
+          background-color: rgba(255, 167, 40, 0.7);
+        }
+
+        .position-comparison .worse-players-box {
+          width: 25px;
+          height: 25px;
+          border: 1px solid black;
+          background-color: rgba(178, 108, 5, 0.7);
+        }
+
+      /* Alternative Positions */
+      .alternative-positions {
+        width: 900px;
+        height: 700px;
+        margin-top: 20px;
+        margin-bottom: 20px;
+
+        border-top: 1px solid #888;
+        border-bottom: 1px solid #888;
+      }
+
+      .alternative-positions .player-list {
+        width: 200px;
+        height: 680px;
+        margin-left: 5px;
+        margin-top: 5px;
+        margin-bottom: 5px;
+        font-family: "nyt-franklin", arial, helvetica, serif;
+        border-right: 1px solid #383838;
+        text-align: center;
+        display: inline-block;
+      }
+
+      .player-list .title {
+        font-size: 14px;
+        font-weight: 700;
+        margin-top: 5px;
+        height: 20px;
+        margin-right: 3px;
+        margin-left: 3px;
+        border-bottom: 1px solid #383838;
+      }
+
+      .player-list .p {
+        font-size: 12px;
+        font-weight: 400;
+        height: 20px;
+        padding-top: 5px;
+      }
+
+      .player-list .p.selected {
+        background-color: rgba(200, 200, 200, 0.3);
+      }
+
+      .player-list .p:hover {
+        cursor: pointer;
+        background-color: rgba(200, 200, 200, 0.3);
+      }
+
+      .alternative-positions .details {
+        width: 680px;
+        height: 680px;
+        font-family: "nyt-franklin", arial, helvetica, serif;
+        margin-top: 5px;
+        text-align: center;
+        display: inline-block;
+        vertical-align: top;
+      }
+
+      .details .title {
+        font-size: 14px;
+        font-weight: 700;
+        margin-top: 5px;
+        height: 20px;
+        margin-right: 7px;
+        margin-left: 3px;
+        border-bottom: 1px solid #383838;
+      }
+
+      .details .current-plot {
+        width: 680px;
+        height: 190px;
+      }
+
+      .alternative-positions .alternatives {
+        font-family: "nyt-franklin", arial, helvetica, serif;
+        display: inline-block;
+        vertical-align: middle;
+        width: 680px;
+        height: 460px;
+      }
+
+      .alternatives .position {
+        padding-left: 5px;
+        display: table-row;
+
+        border-collapse: separate;
+      }
+
+      .alternatives .position .title {
+        display: table-cell; 
+        vertical-align: middle;
+        -webkit-transform: rotate(-90deg);
+        -moz-transform: rotate(-90deg);
+        -o-transform: rotate(-90deg);
+        -ms-transform: rotate(-90deg);
+        transform: rotate(-90deg);
+        border-bottom: none;
+      }
+
+      .alternatives .position .plot {
+        display: table-cell;
+        height: 80;
+        /*border-left: 1px solid black;*/
+        padding-bottom: 10px;
+        width: 680px;
+      }
+
+      .alternatives .position:hover {
+        background-color: rgba(200, 200, 200, 0.3);
+      }
+
+      .alternative-positions circle.player {
+          stroke: #000;
+          fill: #eee;
+          stroke-width: 1;
+      }
+
+      .alternative-positions circle.selected {
+        stroke: #000;
+        fill: #FF9C0E;
+        stroke-width: 1;
+      }
+
+
+  		</style>
+	</head>
+	<body>
+		<div id="fb-root"></div>
+		<script>(function(d, s, id) {
+		  var js, fjs = d.getElementsByTagName(s)[0];
+		  if (d.getElementById(id)) return;
+		  js = d.createElement(s); js.id = id;
+		  js.src = "//connect.facebook.net/en_US/sdk.js#xfbml=1&appId=1559586510934315&version=v2.0";
+		  fjs.parentNode.insertBefore(js, fjs);
+		}(document, 'script', 'facebook-jssdk'));
+		</script>
+		<script>
+		!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0];if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src="https://platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");
+		</script>
+
+
+		<div class="article">
+			<div class="header">
+				<div class="logo">
+					NFL  SCOUTING
+				</div>
+			</div>
+			<div class="article-meta">
+				Wednesday, May 7, 2014
+			</div>
+
+			<div class="sidebar">
+				<div class="authors">
+					By <a href="http://efekarakus.com">Efe Karakus</a>
+				</div>
+					<div class="social-media">
+						<div class="fb-share-button" data-href="http://efekarakus.com/blogs/nfl-scouting" data-width="80" data-type="button"></div>
+						<div class="separator"></div>
+						<a href="http://efekarakus.com/blogs/nfl-scouting" class="twitter-share-button" data-lang="en" data-size="80" data-count="none">Tweet</a>
+					</div>
+			</div>
+
+			<div class="writing">
+				<div class="introduction">
+					<p>
+					The stats win nothing. I'm still sexy. I'm still great.<br/>
+          -- Shaquille O'Neal
+					</p>
+				</div>
+				<h2> Problem </h2>
+				<p>
+					I decided to analyze two problems related to college football players. First, is there
+					a way to measure and visualize how good is a player with respect to his position? Second,
+					can the underperforming players be placed to a different position where they could perform
+					better?
+				</p>
+				<h2> Data </h2>
+				<p>
+					I gathered data from the <a href="http://www.nfl.com/combine"> NFL Scouting Combine </a> event from
+					2011 - 2014. The data was crawled from <a href="http://nflcombineresults.com/nflcombinedata.php">nflcombineresults.com</a>,
+					which combines data from many sources such as <a href="http://nfl.com">nfl.com</a>,
+					<a href="http://espn.com">espn.com</a>, and <a href="http://cbs.com">cbs.com</a>. The players that
+					did not finish all 6 workouts were ignored. Quarterbacks were the only exception, as many of them could not 
+					attempt the bench press drill. They were given a score of 0 reps if they managed to complete all other workouts.
+				</p>
+				<p>
+					Here is a sample view to illustrate our dataset:
+				</p>
+			</div>
+			<div class="dataset-table">
+				<table>
+					<tr class="labels">
+						<td> Name </td>
+						<td> Position </td>
+						<td> 40 Yards<br/>(sec) </td>
+						<td> Bench Press<br/>(rep) </td>
+						<td> Vertical Leap<br/>(in) </td>
+						<td> Broad Jump<br/>(in) </td>
+						<td> Shuttle<br/>(sec) </td>
+						<td> 3 Cone<br/>(sec) </td>
+					</tr>
+					<tr class="values">
+						<td> Anthony Barr </td>
+						<td> LB </td>
+						<td> 4.66 </td>
+						<td> 15 </td>
+						<td> 34.5 </td>
+						<td> 117.0 </td>
+						<td> 4.19 </td>
+						<td> 6.82 </td>
+					</tr>
+					<tr class="values">
+						<td> Kyle Fuller </td>
+						<td> CB </td>
+						<td> 4.49 </td>
+						<td> 12 </td> 
+						<td> 38.5 </td> 
+						<td> 127.0 </td>
+						<td> 4.19 </td> 
+						<td> 6.9</td>
+					</tr>
+					<tr class="values">
+						<td> Zac Stacy </td>
+						<td> RB </td>
+						<td> 4.55 </td>
+						<td> 27 </td>
+						<td> 33.0 </td>
+						<td> 122.0 </td> 
+						<td> 4.17 </td>
+						<td> 6.7 </td>
+					</td>
+				</table>
+			</div>
+      
+      <div class="sidebar"></div>
+      <div id="pcs" class="writing">
+        <h2 class="subtitle"> Player's Performance </h2>
+        <h3> How good is a player with respect to his position? </h3>
+        <p>
+          After applying some <a href="http://en.wikipedia.org/wiki/Principal_component_analysis">mathematical magic</a>, we
+          can map a player's drill values onto two-dimensions. In the scatter plot below, players that are better in their
+          position are placed further to the right on the x-axis. Similarly, for the y-axis.
+        </p>
+      </div>
+
+      <div class="player-comparisons">
+        <div class="comparison">
+          <div class="positions">
+            <div> Position: </div>
+            <div class="position selected" title="Wide Receivers" data-pos="WR"> WR </div>
+            <div class="position" title="Tight Ends" data-pos="TE"> TE </div>
+            <div class="position" title="Running Backs" data-pos="RB"> RB </div>
+            <div class="position" title="Quarted Backs" data-pos="QB"> QB </div>
+            <div class="position" title="Offensive Line" data-pos="OL"> OL </div>
+            <div class="position" title="Full Backs" data-pos="RB"> FB </div>
+            <div> | </div>
+            <div class="position" title="Safeties" data-pos="S"> S </div>
+            <div class="position" title="Line Backers" data-pos="LB"> LB </div>
+            <div class="position" title="Defensive Line" data-pos="DL"> DL </div>
+            <div class="position" title="Corner Backs" data-pos="CB"> CB </div>
+          </div>
+          <div class="vis">
+            <div class="position-plot"></div>
+            <div class="position-comparison">
+              <div class="player-name"></div>
+              <div class="legend">
+                <div class="legend-row">
+                  <div class="better-players-box"></div>
+                  Better players
+                </div>
+                <div class="legend-row">
+                  <div class="likely-better-players-box"></div>
+                  Likely better players
+                </div>
+                <div class="legend-row">
+                  <div class="likely-worse-players-box"></div>
+                  Likely worse players
+                </div>
+                <div class="legend-row">
+                  <div class="worse-players-box"></div>
+                  Worse players
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="sidebar"></div>
+      <div class="writing">
+        <h2 class="subtitle"> Alternative Positions </h2>
+        <p>
+          Over the course of history, there has been <a href="http://bleacherreport.com/articles/1650280-nfl-players-who-must-change-positions-remain-effective/page/5">cases</a> where switching the position of a player
+          improved his performance dramatically.</br>
+          In the interactive below, we map under-performing players to other positions and show that they could
+          theoretically be a better match elsewhere.
+        </p>
+      </div>
+
+      <div class="alternative-positions">
+        <div class="player-list">
+          <div class="title">Player's Name</div>
+          <div class="p selected">Taylor Lewan</div>
+          <div class="p">Markus White</div>
+          <div class="p">Devin Taylor</div>
+          <div class="p">Kendall Reyes</div>
+          <div class="p">Mike Martin</div>
+          <div class="p">Marvin Austin</div>
+          <div class="p">Greg Robinson</div>
+          <div class="p">Lane Johnson</div>
+          <div class="p">Joel Bitonio</div>
+          <div class="p">Terron Armstead</div>
+          <div class="p">Eric Fisher</div>
+          <div class="p">Russell Bodine</div>
+          <div class="p">Cliff Matthews</div>
+          <div class="p">Reid Fragel</div>
+          <div class="p">Jamie Collins</div>
+          <div class="p">Sean Spence</div>
+          <div class="p">Tyrann Mathieu</div>
+          <div class="p">Cameron Graham</div>
+          <div class="p">Allen Bradford</div>
+          <div class="p">Matt Asiata</div>
+        </div>
+        <div class="details">
+          <div id="position-title" class="title">Current Position</div>
+          <div class="current-plot"></div>
+          <div class="title">Alternative Positions</div>
+          <div class="alternatives">
+          </div>
+        </div>
+      </div>
+
+      <div class="sidebar"></div>
+      <div class="writing">
+        <p>
+          For example, Taylor Lewan is currently playing as an offensive lineman. However,
+          as we can see above he is placed to the very left of the scatter plot and 
+          hence not the best possible position for him. However, by mapping his values into
+          other positions we can observe that he could outperform several players. Perhaps,
+          trying Lewan as a wide receiver is worthwhile.
+        </p>
+
+        <h2 class="subtitle"> Technical Details </h2>
+        <h3 class="subsubtitle"> Mapping Players into 2-Dimensions </h3>
+        <p>
+          We can reduce our 6 dimensional data into 2 dimensions by applying 
+          <a href="http://en.wikipedia.org/wiki/Principal_component_analysis"> PCA </a>.
+          We chose to grab the first two eigenvectors instead of one from the covariance matrix for both
+          visualization purposes and outlier analysis. If we had a single dimension, multiple players such as  
+          <a href="http://en.wikipedia.org/wiki/Chris_Owusu">Chris Owusu</a> and 
+          <a href="http://en.wikipedia.org/wiki/Stephen_Hill_(American_football)">Stephen Hill</a>
+          would map to the same point and we would find less outliers. However, by looking at our scatter plot we can clearly tell that
+          Owusu should outperform Hill. On the other hand, comparing player in 3 dimensions would be hard to the human eye.
+        </p>
+        <h3 class="subsubtitle"> Finding Outliers </h3>
+        <p>
+          After mapping every player into 2-dimension, as shown in the <a href="#pcs"> Comparing Players </a>
+          section. We apply a density-based clustering algorithm known 
+          as <a href="http://en.wikipedia.org/wiki/DBSCAN">DBScan</a>. DBScan performs well 
+          at finding points that have few neighbors around them. This is achieved by looking at how many
+          neighbors you have within a radius. If a point <i>p</i> does not meet a certain threshold, then 
+          we label it as an outlier.
+        </p>
+        <p>
+          Therefore, DBScan not only allows us to find players that are in the extremes for their position.
+          But also the players that might perform above or below the norm for drills that are not related
+          to that position.
+        </p>
+        <p>
+          We can find the underachieving players then by running DBScan and looking if they have a negative
+          value according to the first principal component.
+        </p>
+        <h3 class="subsubtitle"> Mapping to Another Position </h3>
+        <p>
+          A player can be mapped to another position <i>P</i> after subtracting the average values for <i>P</i>, 
+          and taking the dot product with the first and second components of <i>P</i>. 
+        </p>
+        <h2 class="subtitle"> Open Source </h2>
+        <p>
+          The analysis and datasets can be found in my 
+          <a href="https://github.com/efekarakus/nfl-combine">GitHub repository</a>.
+        </p>
+      </div>
+		</div>
+
+	<script src="js/jquery-1.8.2.min.js"></script>
+	<script src="js/d3.v3.min.js" charset="utf-8"></script>
+    <script src="js/raw-all.js"></script>
+    <script src="js/alternates.js"></script>
+    <script src="js/player-comparisons.js"></script>
+    <script src="js/alternative-positions.js"></script>
+    <script>
+
+      // Credits to
+      // http://stackoverflow.com/questions/9063383/how-to-invoke-click-event-programmaticaly-in-d3
+      jQuery.fn.d3Click = function () {
+        this.each(function (i, e) {
+          var evt = document.createEvent("MouseEvents");
+          evt.initMouseEvent("click", true, true, window, 0, 0, 0, 0, 0, false, false, false, false, 0, null);
+          e.dispatchEvent(evt);
+        });
+      };
+
+      drawPosition('WR');
+
+      $('.position').click(function() {
+        var elem = $(this),
+            pos = elem.data('pos');
+
+        $('.position.selected').removeClass('selected');
+        elem.addClass('selected');
+        drawPosition(pos);
+      });
+
+
+      // Alternates Position Section
+      drawCurrentPosition('Taylor Lewan');
+      drawAlternates('Taylor Lewan');
+
+      $('.p').click(function() {
+        var elem = $(this);
+        var players = $('.p');
+
+        // remove the selection
+        for (var i = 0; i < players.length; i++) {
+          var p = $(players[i]);
+          if (p.hasClass('selected')) p.removeClass('selected');
+        }
+        elem.addClass('selected');
+
+        drawCurrentPosition(elem.html());
+        drawAlternates(elem.html());
+      });
+    </script>
+	</body>
+</html>
